@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fashion Hub</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Basic cart display styles */
+    #cart-container {
+      position: fixed;
+      top: 60px;
+      right: 20px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: none;
+    }
+
+    #cart-title {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    #cart-items {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    #cart-items li {
+      margin-bottom: 5px;
+    }
+
+    .cart-item-name {
+      font-weight: bold;
+    }
+
+    .cart-item-price {
+      color: #e44d26;
+    }
+
+    header nav ul li#cart-link,
+    header nav ul li#logout-link {
+      margin-left: 20px;
+    }
+
+    header nav ul li#cart-link a,
+    header nav ul li#logout-link a {
+      text-decoration: none;
+      color: #555;
+      font-weight: bold;
+      transition: color 0.3s ease;
+      cursor: pointer;
+    }
+
+    header nav ul li#cart-link a:hover,
+    header nav ul li#logout-link a:hover {
+      color: #e44d26;
+    }
+
+    /* Simple Modal Styling */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.5);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 300px;
+      border-radius: 5px;
+    }
+
+    .close-button {
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .form-actions {
+      text-align: center;
+    }
+
+    .switch-form {
+      text-align: center;
+      margin-top: 10px;
+      color: #007bff;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <h1>Fashion Hub</h1>
+      <nav>
+        <ul>
+          <li><a href="#men">Men</a></li>
+          <li><a href="#women">Women</a></li>
+          <li><a href="#kids">Kids</a></li>
+          <li id="cart-link"><a onclick="toggleCart()">My Cart</a></li>
+          <li id="logout-link"><a onclick="logoutUser()">Logout</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+      <div class="container">
+        <h2>Discover Your Style</h2>
+        <p>Explore the latest fashion trends for everyone.</p>
+      </div>
+    </section>
+
+    <!-- Men Section -->
+    <section id="men" class="category-section men-section">
+      <div class="container">
+        <h2>Men's Collection</h2>
+        <div class="category-grid">
+          <div class="category-item" data-item-name="Men's Shirt" data-item-price="25.99">
+            <img src="images/menimg1.jpg" alt="Men's Fashion 1">
+            <h3>Formal Men</h3>
+            <button class="add-to-cart-btn" data-item-id="men1">Add to Cart</button>
+          </div>
+          <div class="category-item" data-item-name="Men's Jacket" data-item-price="79.50">
+            <img src="images/menimg1.jpg" alt="Men's Fashion 2">
+            <h3>Formal Men</h3>
+            <button class="add-to-cart-btn" data-item-id="men2">Add to Cart</button>
+          </div>
+        </div>
+        <a href="#" class="view-all-btn">View All Men's</a>
+      </div>
+    </section>
+
+    <!-- Women Section -->
+    <section id="women" class="category-section women-section">
+      <div class="container">
+        <h2>Women's Collection</h2>
+        <div class="category-grid">
+          <div class="category-item" data-item-name="Women's Dress" data-item-price="45.00">
+            <img src="images/women1.jpg" alt="Women's Fashion 1">
+            <h3>Women Clothes</h3>
+            <button class="add-to-cart-btn" data-item-id="women1">Add to Cart</button>
+          </div>
+          <div class="category-item" data-item-name="Women's Blouse" data-item-price="30.75">
+            <img src="images/women1.jpg" alt="Women's Fashion 2">
+            <h3>Women Clothes</h3>
+            <button class="add-to-cart-btn" data-item-id="women2">Add to Cart</button>
+          </div>
+        </div>
+        <a href="#" class="view-all-btn">View All Women's</a>
+      </div>
+    </section>
+
+    <!-- Kids Section -->
+    <section id="kids" class="category-section kids-section">
+      <div class="container">
+        <h2>Kids' Collection</h2>
+        <div class="category-grid">
+          <div class="category-item" data-item-name="Kids' T-Shirt" data-item-price="15.20">
+            <img src="images/kidcloth1.jpg" alt="Kids' Fashion 1">
+            <h3>Kids Clothes</h3>
+            <button class="add-to-cart-btn" data-item-id="kids1">Add to Cart</button>
+          </div>
+          <div class="category-item" data-item-name="Kids' Jeans" data-item-price="35.90">
+            <img src="images/kidcloth1.jpg" alt="Kids' Fashion 2">
+            <h3>Kids Clothes</h3>
+            <button class="add-to-cart-btn" data-item-id="kids2">Add to Cart</button>
+          </div>
+        </div>
+        <a href="#" class="view-all-btn">View All Kids'</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Fashion Hub. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- SignUp Modal -->
+  <div id="signupModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button" onclick="closeSignupModal()">&times;</span>
+      <h2>Sign Up</h2>
+      <form id="signupForm">
+        <div class="form-group">
+          <label for="signupUsername">Username:</label>
+          <input type="text" id="signupUsername" name="signupUsername" required>
+        </div>
+        <div class="form-group">
+          <label for="signupPassword">Password:</label>
+          <input type="password" id="signupPassword" name="signupPassword" required>
+        </div>
+        <div class="form-actions">
+          <button type="submit">Sign Up</button>
+        </div>
+        <div class="switch-form" onclick="openLoginModal()">Already have an account? Log in</div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button" onclick="closeLoginModal()">&times;</span>
+      <h2>Log In</h2>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="loginUsername">Username:</label>
+          <input type="text" id="loginUsername" name="loginUsername" required>
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password:</label>
+          <input type="password" id="loginPassword" name="loginPassword" required>
+        </div>
+        <div class="form-actions">
+          <button type="submit">Log In</button>
+        </div>
+        <div class="switch-form" onclick="openSignupModal()">Don't have an account? Sign up</div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Cart Container -->
+  <div id="cart-container">
+    <h2 id="cart-title">Your Cart</h2>
+    <ul id="cart-items"></ul>
+  </div>
+
+  <!-- JavaScript Code -->
+  <script>
+    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+    const signupModal = document.getElementById('signupModal');
+    const loginModal = document.getElementById('loginModal');
+    const cartContainer = document.getElementById('cart-container');
+    const cartItemsList = document.getElementById('cart-items');
+
+    let userLoggedIn = localStorage.getItem('userLoggedIn') === 'true' || false;
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+
+    function toggleCart() {
+      cartContainer.style.display = (cartContainer.style.display === 'none' || cartContainer.style.display === '') ? 'block' : 'none';
+    }
+
+    function logoutUser() {
+      userLoggedIn = false;
+      localStorage.removeItem('userLoggedIn');
+      cart.length = 0;
+      localStorage.removeItem('cart');
+      updateCartDisplay();
+      alert("Logged out successfully. Your cart has been cleared.");
+    }
+
+    function saveUsers() {
+      localStorage.setItem('users', JSON.stringify(users));
+    }
+
+    function saveLoginStatus() {
+      localStorage.setItem('userLoggedIn', userLoggedIn);
+    }
+
+    function saveCart() {
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    addToCartButtons.forEach(button => {
+      button.addEventListener('click', (event) => {
+        const itemId = event.target.dataset.itemId;
+        const itemContainer = event.target.closest('.category-item');
+        const itemName = itemContainer.dataset.itemName;
+        const itemPrice = itemContainer.dataset.itemPrice;
+        handleAddToCart(itemId, itemName, itemPrice);
+      });
+    });
+
+    function handleAddToCart(itemId, itemName, itemPrice) {
+      if (!userLoggedIn) {
+        if (confirm("You need to sign up/log in to add items to your cart. Log in now?")) {
+          openLoginModal();
+        }
+      } else {
+        addToCart(itemId, itemName, itemPrice);
+      }
+    }
+
+    function addToCart(itemId, itemName, itemPrice) {
+      const existingItem = cart.find(item => item.id === itemId);
+      if (existingItem) {
+        alert(`${itemName} is already in your cart.`);
+      } else {
+        cart.push({ id: itemId, name: itemName, price: itemPrice });
+        updateCartDisplay();
+        saveCart();
+      }
+    }
+
+    function updateCartDisplay() {
+      cartItemsList.innerHTML = '';
+      if (cart.length === 0) {
+        const listItem = document.createElement('li');
+        listItem.textContent = 'Your cart is empty.';
+        cartItemsList.appendChild(listItem);
+      } else {
+        cart.forEach(item => {
+          const listItem = document.createElement('li');
+          listItem.innerHTML = `<span class="cart-item-name">${item.name}</span> - <span class="cart-item-price">$${item.price}</span>`;
+          cartItemsList.appendChild(listItem);
+        });
+      }
+    }
+
+    function openSignupModal() {
+      signupModal.style.display = "block";
+      loginModal.style.display = "none";
+    }
+
+    function closeSignupModal() {
+      signupModal.style.display = "none";
+    }
+
+    function openLoginModal() {
+      loginModal.style.display = "block";
+      signupModal.style.display = "none";
+    }
+
+    function closeLoginModal() {
+      loginModal.style.display = "none";
+    }
+
+    document.getElementById('signupForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const username = document.getElementById('signupUsername').value;
+      const password = document.getElementById('signupPassword').value;
+
+      if (users.some(user => user.username === username)) {
+        alert("Username already exists. Please choose another one.");
+        return;
+      }
+
+      users.push({ username, password });
+      saveUsers();
+      closeSignupModal();
+      alert("Signup successful! You can now log in.");
+      openLoginModal();
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const username = document.getElementById('loginUsername').value;
+      const password = document.getElementById('loginPassword').value;
+
+      const user = users.find(user => user.username === username && user.password === password);
+
+      if (user) {
+        userLoggedIn = true;
+        saveLoginStatus();
+        closeLoginModal();
+        alert(`Welcome back, ${username}!`);
+      } else {
+        alert("Invalid username or password. Please try again.");
+      }
+    });
+
+    // Load the cart display when the page is reloaded
+    updateCartDisplay();
+  </script>
+</body>
+</html>
